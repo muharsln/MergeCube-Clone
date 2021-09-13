@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public static Player instance;
+    public static Player Instance;
     //PUBLIC OBJECTS
     [SerializeField] private Transform _eCubesParent;
 
@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     void Update()
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
 
     void CubeMovement()
     {
-        if (GameManager.instance._gameStopped == false)
+        if (GameManager.Instance._gameStopped == false)
         {
             if (isMoving == false)
             {

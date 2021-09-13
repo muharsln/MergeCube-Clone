@@ -13,6 +13,12 @@ public class Ball : MonoBehaviour
     [SerializeField] private TrailRenderer _trailRenderer;
 
 
+    private void Start()
+    {
+        _trace.SetActive(true);
+        _trailRenderer.emitting = false;
+    }
+
     private void OnDisable()
     {
         _isMoved = false;
@@ -23,7 +29,7 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (GameManager.instance._gameStopped == false)
+        if (GameManager.Instance._gameStopped == false)
         {
             if (this._isMoved == false)
             {
@@ -32,7 +38,7 @@ public class Ball : MonoBehaviour
                     this.gameObject.layer = 6;
                     this._isMoved = true;
                     this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-                    Player.instance.CreateNewBall();
+                    Player.Instance.CreateNewBall();
                 }
             }
         }
@@ -49,7 +55,7 @@ public class Ball : MonoBehaviour
             other.gameObject.GetComponent<Ball>().hasCollided = true;
             this.hasCollided = true;
 
-            StartCoroutine(GameManager.instance.MoveToTarget(this.transform, other.transform, 2f, 0.15f, _tag));
+            StartCoroutine(GameManager.Instance.MoveToTarget(this.transform, other.transform, 2f, 0.15f, _tag));
             return;
         }
     }
@@ -59,14 +65,14 @@ public class Ball : MonoBehaviour
         if (other.gameObject.CompareTag("StartPointLine") && this._isMoved == true)
         {
             other.gameObject.GetComponent<BoxCollider>().isTrigger = false;
-            GameManager.instance.GameFail();
+            GameManager.Instance.GameFail();
         }
     }
 
     private void Update()
     {
         // Top hareket ediyorsa önünde bulunan iz objesinin görünürlüðünü pasif et.
-        if (Player.instance.isMoving)
+        if (Player.Instance.isMoving)
         {
             _trace.SetActive(false);
             _trailRenderer.emitting = true;
