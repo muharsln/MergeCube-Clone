@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     private float _sphere_x;
 
     //TOP ÝLERÝ GÝDÝYORSA KONTROLÜ KAPATMAK ÝÇNÝ
-    public bool isMoving;
+    [HideInInspector] public bool isMoving;
 
     //TAG LIST
     private string[] _tags = { "2", "4", "8", "16", "32", "64" };
