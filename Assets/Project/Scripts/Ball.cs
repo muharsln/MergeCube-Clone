@@ -6,6 +6,8 @@ public class Ball : MonoBehaviour
 
     [SerializeField] private GameObject _trace;
 
+    [SerializeField] private TrailRenderer _trailRenderer;
+
     private void OnCollisionEnter(Collision other)
     {
         if (GameManager.instance._gameStopped == false)
@@ -38,6 +40,7 @@ public class Ball : MonoBehaviour
         if (Player.instance.isMoving)
         {
             _trace.SetActive(false);
+            _trailRenderer.emitting = true;
         }
     }
 }
