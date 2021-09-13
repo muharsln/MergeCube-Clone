@@ -120,6 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac12a69f7c7891d4c85e0a3b483aaf9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasCollided: 0
+  _isMoved: 0
+  _tag: 4
   _trace: {fileID: 5839171342124522819}
   _trailRenderer: {fileID: 2610497868064069619}
 --- !u!65 &2109195229

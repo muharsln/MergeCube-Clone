@@ -89,11 +89,11 @@ public class Player : MonoBehaviour
             string tag = _tags[Random.Range(0, 5)];
             GameObject newBall = ObjectPooler.SharedInstance.GetPooledObject(tag);
             newBall.transform.parent = this.transform;
-            newBall.transform.localPosition = new Vector3(0f, 0.4f, 0f);
+            newBall.transform.localPosition = new Vector3(0f, 0.3f, 0f);
+            newBall.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             newBall.SetActive(true);
-
-            newBall.layer = 0;
-
+            newBall.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+  
             isMoving = false;
         }
     }

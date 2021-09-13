@@ -2,11 +2,24 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private bool _isMoved;
+    [HideInInspector] public bool hasCollided = false;
+
+    [HideInInspector] public bool _isMoved;
+
+    [SerializeField] private string _tag;
 
     [SerializeField] private GameObject _trace;
 
     [SerializeField] private TrailRenderer _trailRenderer;
+
+
+    private void OnDisable()
+    {
+        _isMoved = false;
+        hasCollided = false;
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+    }
+
 
     private void OnCollisionEnter(Collision other)
     {
@@ -22,6 +35,22 @@ public class Ball : MonoBehaviour
                     Player.instance.CreateNewBall();
                 }
             }
+        }
+
+        //BÝRLEÞTÝRME
+        if (other.gameObject.layer == 6 && this.transform.tag == other.transform.tag && other.transform.tag != "2048")
+        {
+            if (other.gameObject.GetComponent<Ball>().hasCollided == true)
+            {
+                return;
+            }
+
+
+            other.gameObject.GetComponent<Ball>().hasCollided = true;
+            this.hasCollided = true;
+
+            StartCoroutine(GameManager.instance.MoveToTarget(this.transform, other.transform, 2f, 0.15f, _tag));
+            return;
         }
     }
 
