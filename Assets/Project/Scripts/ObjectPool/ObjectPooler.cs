@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +12,6 @@ public class ObjectPoolItem
 
 public class ObjectPooler : MonoBehaviour
 {
-
     public static ObjectPooler SharedInstance;
 
     public List<ObjectPoolItem> itemsToPool;
@@ -46,6 +44,7 @@ public class ObjectPooler : MonoBehaviour
         {
             if (!pooledObjects[i].activeInHierarchy && pooledObjects[i].tag == tag)
             {
+                // Buraya hiç girmiyor.
                 return pooledObjects[i];
             }
         }
@@ -55,6 +54,7 @@ public class ObjectPooler : MonoBehaviour
             {
                 if (item.shouldExpand)
                 {
+                    // Buraya hiç girmiyor.
                     GameObject obj = (GameObject)Instantiate(item.objectToPool);
                     obj.SetActive(false);
                     pooledObjects.Add(obj);
