@@ -1128,30 +1128,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsToPool:
-  - amountToPool: 5
-    objectToPool: {fileID: 344945051068156841, guid: 0d7102b9c876c7349871ae7c28ed010d, type: 3}
+  - amountToPool: 0
+    objectToPool: {fileID: 0}
     parent: {fileID: 0}
-    shouldExpand: 1
-  - amountToPool: 5
-    objectToPool: {fileID: 344945051068156841, guid: ac32f43de13f280428193eabb3ffe0ab, type: 3}
+    shouldExpand: 0
+  - amountToPool: 0
+    objectToPool: {fileID: 0}
     parent: {fileID: 0}
-    shouldExpand: 1
-  - amountToPool: 5
-    objectToPool: {fileID: 344945051068156841, guid: ff1472edfe9448a468cf44e887b40494, type: 3}
+    shouldExpand: 0
+  - amountToPool: 0
+    objectToPool: {fileID: 0}
     parent: {fileID: 0}
-    shouldExpand: 1
-  - amountToPool: 5
-    objectToPool: {fileID: 344945051068156841, guid: 8cd245285ec1455428e663e280744a10, type: 3}
+    shouldExpand: 0
+  - amountToPool: 0
+    objectToPool: {fileID: 0}
     parent: {fileID: 0}
-    shouldExpand: 1
-  - amountToPool: 5
-    objectToPool: {fileID: 344945051068156841, guid: ab08665fb9cc4094f8939094ae352428, type: 3}
+    shouldExpand: 0
+  - amountToPool: 0
+    objectToPool: {fileID: 0}
     parent: {fileID: 0}
-    shouldExpand: 1
-  - amountToPool: 5
-    objectToPool: {fileID: 344945051068156841, guid: 385b0197fae139f47add4a8fcecdb21f, type: 3}
+    shouldExpand: 0
+  - amountToPool: 0
+    objectToPool: {fileID: 0}
     parent: {fileID: 0}
-    shouldExpand: 1
+    shouldExpand: 0
   pooledObjects: []
 --- !u!1 &8614971830853517685
 GameObject:
