@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     public static Player instance;
     //PUBLIC OBJECTS
     [SerializeField] private Transform _eCubesParent;
@@ -16,20 +13,14 @@ public class Player : MonoBehaviour
     private float _sphere_x;
 
     //TOP ÝLERÝ GÝDÝYORSA KONTROLÜ KAPATMAK ÝÇNÝ
-    private bool _isMoving;
+    public bool isMoving;
 
     //TAG LIST
     private string[] _tags = { "2", "4", "8", "16", "32", "64" };
 
-
     void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
-
     }
 
     void Update()
@@ -41,7 +32,7 @@ public class Player : MonoBehaviour
     {
         if (GameManager.instance._gameStopped == false)
         {
-            if (_isMoving == false)
+            if (isMoving == false)
             {
                 //SAÐA SOLA HAREKET
                 if (Input.GetMouseButtonDown(0))
@@ -69,14 +60,10 @@ public class Player : MonoBehaviour
                         Mathf.Lerp(this.transform.GetChild(0).transform.localPosition.x, _sphere_x, 0.1f),
                         this.transform.GetChild(0).localPosition.y,
                         this.transform.GetChild(0).transform.localPosition.z);
-
-
                 }
 
                 if (Input.GetMouseButtonUp(0))
                 {
-
-
                     /// OBJEYI LERP ÝLE ÝLERÝYE TAÞI
                     GameObject playerBall = this.transform.GetChild(0).gameObject;
                     Vector3 targetPos = playerBall.transform.localPosition;
@@ -88,7 +75,7 @@ public class Player : MonoBehaviour
                     //PARENTÝNÝ DEÐÝÞ
                     playerBall.transform.parent = _eCubesParent;
 
-                    _isMoving = true;
+                    isMoving = true;
                 }
             }
         }
@@ -107,7 +94,7 @@ public class Player : MonoBehaviour
 
             newBall.layer = 0;
 
-            _isMoving = false;
+            isMoving = false;
         }
     }
 }

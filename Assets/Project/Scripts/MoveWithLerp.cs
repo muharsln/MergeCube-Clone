@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-
 public class MoveWithLerp : MonoBehaviour
 {
     public static IEnumerator MoveToTarget(Transform follower, Vector3 TargetPos, float speed, float time)
@@ -24,4 +23,3 @@ public class MoveWithLerp : MonoBehaviour
         Player.instance.CreateNewBall();
     }
 }
-

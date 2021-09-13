@@ -16,13 +16,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void GameFail()
     {
         Debug.Log("Game Fail");
         _gameStopped = true;
     }
-
-
-
 }

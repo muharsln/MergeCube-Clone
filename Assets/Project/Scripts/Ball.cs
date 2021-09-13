@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
     private bool _isMoved;
+
+    [SerializeField] private GameObject _trace;
 
     private void OnCollisionEnter(Collision other)
     {
@@ -29,6 +29,15 @@ public class Ball : MonoBehaviour
         {
             other.gameObject.GetComponent<BoxCollider>().isTrigger = false;
             GameManager.instance.GameFail();
+        }
+    }
+
+    private void Update()
+    {
+        // Top hareket ediyorsa önünde bulunan iz objesinin görünürlüðünü pasif et.
+        if (Player.instance.isMoving)
+        {
+            _trace.SetActive(false);
         }
     }
 }
