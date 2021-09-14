@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     //TOP ÝLERÝ GÝDÝYORSA KONTROLÜ KAPATMAK ÝÇNÝ
     [HideInInspector] public bool isMoving;
 
+    private static int Square = 0, Trail = 1;
+
     //TAG LIST
     private string[] _tags = { "2", "4", "8", "16", "32", "64" };
 
@@ -64,13 +66,18 @@ public class Player : MonoBehaviour
 
                 if (Input.GetMouseButtonUp(0))
                 {
-                    /// OBJEYI LERP ÝLE ÝLERÝYE TAÞI
+                    /// CHÝLD OBJEYÝ AL
                     GameObject playerBall = this.transform.GetChild(0).gameObject;
                     Vector3 targetPos = playerBall.transform.localPosition;
                     targetPos.z = 7.8f;
 
+
+                    //CHÝLD OBJEYÝ FORCE ÝLE ÝLERÝ TAÞI
                     playerBall.GetComponent<Rigidbody>().AddForce(0f, 0f, 15f, ForceMode.Impulse);
-                    // StartCoroutine(MoveWithLerp.MoveToTarget(playerBall.transform, targetPos, 0.5f, 0.5f));
+
+                    
+                    playerBall.transform.GetChild(Square).gameObject.SetActive(false);
+                    playerBall.transform.GetChild(Trail).gameObject.SetActive(true);
 
                     //PARENTÝNÝ DEÐÝÞ
                     playerBall.transform.parent = _eCubesParent;
@@ -81,7 +88,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void CreateNewBall()
+    public void CreatePlayerBall()
     {
         if (this.transform.childCount < 1)
         {
@@ -91,6 +98,8 @@ public class Player : MonoBehaviour
             newBall.transform.parent = this.transform;
             newBall.transform.localPosition = new Vector3(0f, 0.3f, 0f);
             newBall.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            newBall.transform.GetChild(Square).gameObject.SetActive(true);
+            newBall.transform.GetChild(Trail).gameObject.SetActive(false);
             newBall.SetActive(true);
             newBall.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
   

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -8,16 +9,9 @@ public class Ball : MonoBehaviour
 
     [SerializeField] private string _tag;
 
-    [SerializeField] private GameObject _trace;
 
-    [SerializeField] private TrailRenderer _trailRenderer;
+    private static int Square = 0, Trail = 1;
 
-
-    private void Start()
-    {
-        _trace.SetActive(true);
-        _trailRenderer.emitting = false;
-    }
 
     private void OnDisable()
     {
@@ -29,16 +23,20 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        //KÜPÜN PLAYER DEN AYRILMA KISMI BURADAN YAPILIYOR
         if (GameManager.Instance._gameStopped == false)
         {
             if (this._isMoved == false)
             {
                 if (other.gameObject.layer == 6 || other.gameObject.layer == 7)
                 {
-                    this.gameObject.layer = 6;
+                    
+                    this.transform.GetChild(Trail).gameObject.SetActive(false);
+
+                    //this.gameObject.layer = 6;
                     this._isMoved = true;
                     this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-                    Player.Instance.CreateNewBall();
+                    Player.Instance.CreatePlayerBall();
                 }
             }
         }
@@ -55,13 +53,14 @@ public class Ball : MonoBehaviour
             other.gameObject.GetComponent<Ball>().hasCollided = true;
             this.hasCollided = true;
 
-            StartCoroutine(GameManager.Instance.MoveToTarget(this.transform, other.transform, 2f, 0.15f, _tag));
+            StartCoroutine(MoveToTarget(this.transform, other.transform, 2f, 0.1f, _tag));
             return;
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
+        // FAIL OLMA BÖLÜMÜ // BÝRAZ BUGLU DÜZENLENECEK
         if (other.gameObject.CompareTag("StartPointLine") && this._isMoved == true)
         {
             other.gameObject.GetComponent<BoxCollider>().isTrigger = false;
@@ -69,13 +68,38 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void Update()
+
+    public IEnumerator MoveToTarget(Transform follower, Transform Target, float speed, float time, string tag)
     {
-        // Top hareket ediyorsa önünde bulunan iz objesinin görünürlüðünü pasif et.
-        if (Player.Instance.isMoving)
+        //LERP DEÐERLERÝ
+        float elapsedTime = 0;
+        float waitTime = 0.3f;
+        Vector3 currentPos = follower.transform.position;
+
+        ///LERP ÝLE OBJEDEN OBJEYE GÝDÝYOR
+        while (elapsedTime < time)
         {
-            _trace.SetActive(false);
-            _trailRenderer.emitting = true;
+            follower.transform.position = Vector3.Lerp(currentPos, Target.position, (elapsedTime / waitTime) * speed);
+            elapsedTime += Time.deltaTime;
+
+            Debug.Log("while calisiyor");
+            yield return null;
         }
+
+
+        follower.gameObject.SetActive(false);
+        Target.gameObject.SetActive(false);
+
+        CreateBall(Target);
+    }
+
+    void CreateBall(Transform target)
+    {
+        GameObject GO = ObjectPooler.SharedInstance.GetPooledObject(_tag);
+        GO.transform.GetChild(Square).gameObject.SetActive(false);
+        GO.transform.GetChild(Trail).gameObject.SetActive(false);
+        GO.transform.position = target.transform.position;
+        GO.transform.rotation = target.transform.rotation;
+        GO.SetActive(true);
     }
 }
