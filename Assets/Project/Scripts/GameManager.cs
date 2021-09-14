@@ -6,7 +6,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [HideInInspector] public bool _gameStopped;
+    public static int Square = 0, Trail = 1;
+
+    [HideInInspector] public bool gameStopped;
 
     private void Awake()
     {
@@ -19,6 +21,6 @@ public class GameManager : MonoBehaviour
     public void GameFail()
     {
         Debug.Log("Game Fail");
-        _gameStopped = true;
+        gameStopped = true;
     }
 }

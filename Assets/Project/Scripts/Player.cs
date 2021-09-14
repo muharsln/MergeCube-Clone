@@ -3,21 +3,20 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player Instance;
-    //PUBLIC OBJECTS
-    [SerializeField] private Transform _eCubesParent;
 
-    // KARAKTERIN SAGA SOLA KAYDIRILMASI ÝÇÝN GGEREKLÝ
-    private Vector3 _mouse_pos_start;
-    private Vector3 _mouse_pos;
-    private float _position_x;
-    private float _sphere_x;
+    [SerializeField] private Transform _enemyCubesParent;
 
-    //TOP ÝLERÝ GÝDÝYORSA KONTROLÜ KAPATMAK ÝÇNÝ
-    [HideInInspector] public bool isMoving;
+    // Karakterin saða sola kaydýrýlmasý için gerekli olan deðiþkenler.
+    private Vector3 _mousePosStart;
+    private Vector3 _mousePos;
 
-    private static int Square = 0, Trail = 1;
+    private float _posX;
+    private float _sphereX;
 
-    //TAG LIST
+    // Top ileri gidiyorsa kontrolü kapatmak için.
+    private bool _isMoving;
+
+    // Tag listesi.
     private string[] _tags = { "2", "4", "8", "16", "32", "64" };
 
     void Awake()
@@ -25,85 +24,83 @@ public class Player : MonoBehaviour
         Instance = this;
     }
 
+    // Hareket kodlarý için Update yerine FixedUpdate kullanýlabilir.
     void Update()
     {
         CubeMovement();
     }
 
+    #region Cube Movement
     void CubeMovement()
     {
-        if (GameManager.Instance._gameStopped == false)
+        if (GameManager.Instance.gameStopped == false)
         {
-            if (isMoving == false)
+            if (_isMoving == false)
             {
                 //SAÐA SOLA HAREKET
                 if (Input.GetMouseButtonDown(0))
                 {
-                    _mouse_pos_start = Input.mousePosition;
-                    _position_x = this.gameObject.transform.GetChild(0).transform.localPosition.x;
+                    _mousePosStart = Input.mousePosition;
+                    _posX = this.gameObject.transform.GetChild(0).transform.localPosition.x;
                 }
 
                 if (Input.GetMouseButton(0))
                 {
-                    _mouse_pos = Input.mousePosition;
-                    _sphere_x = ((_mouse_pos.x - _mouse_pos_start.x) / (Screen.width / 30f)) + _position_x;
+                    _mousePos = Input.mousePosition;
+                    _sphereX = ((_mousePos.x - _mousePosStart.x) / (Screen.width / 30f)) + _posX;
 
+                    if (_sphereX > 1.5f) _sphereX = 1.5f;
 
-                    if (_sphere_x > 1.5f)
-                    {
-                        _sphere_x = 1.5f;
-                    }
-                    if (_sphere_x < -1.5f)
-                    {
-                        _sphere_x = -1.5f;
-                    }
+                    if (_sphereX < -1.5f) _sphereX = -1.5f;
 
                     this.gameObject.transform.GetChild(0).transform.localPosition = new Vector3(
-                        Mathf.Lerp(this.transform.GetChild(0).transform.localPosition.x, _sphere_x, 0.1f),
+                        Mathf.Lerp(this.transform.GetChild(0).transform.localPosition.x, _sphereX, 0.1f),
                         this.transform.GetChild(0).localPosition.y,
                         this.transform.GetChild(0).transform.localPosition.z);
                 }
 
                 if (Input.GetMouseButtonUp(0))
                 {
-                    /// CHÝLD OBJEYÝ AL
+                    // Child objeyi al.
                     GameObject playerBall = this.transform.GetChild(0).gameObject;
                     Vector3 targetPos = playerBall.transform.localPosition;
                     targetPos.z = 7.8f;
 
-
-                    //CHÝLD OBJEYÝ FORCE ÝLE ÝLERÝ TAÞI
+                    // Child objeyi force ile ileri taþý.
                     playerBall.GetComponent<Rigidbody>().AddForce(0f, 0f, 15f, ForceMode.Impulse);
 
-                    
-                    playerBall.transform.GetChild(Square).gameObject.SetActive(false);
-                    playerBall.transform.GetChild(Trail).gameObject.SetActive(true);
+                    playerBall.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
+                    playerBall.transform.GetChild(GameManager.Trail).gameObject.SetActive(true);
 
-                    //PARENTÝNÝ DEÐÝÞ
-                    playerBall.transform.parent = _eCubesParent;
+                    // Parentini deðiþ.
+                    playerBall.transform.parent = _enemyCubesParent;
 
-                    isMoving = true;
+                    _isMoving = true;
                 }
             }
         }
     }
+    #endregion
 
+    #region Create Player Ball
     public void CreatePlayerBall()
     {
         if (this.transform.childCount < 1)
         {
-            //YENÝ OBJE OLUÞTUR
+            // Yeni obje oluþtur.
             string tag = _tags[Random.Range(0, 5)];
+
             GameObject newBall = ObjectPooler.SharedInstance.GetPooledObject(tag);
             newBall.transform.parent = this.transform;
             newBall.transform.localPosition = new Vector3(0f, 0.3f, 0f);
             newBall.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-            newBall.transform.GetChild(Square).gameObject.SetActive(true);
-            newBall.transform.GetChild(Trail).gameObject.SetActive(false);
+            newBall.transform.GetChild(GameManager.Square).gameObject.SetActive(true);
+            newBall.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
             newBall.SetActive(true);
             newBall.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-  
-            isMoving = false;
+
+            _isMoving = false;
         }
     }
+    #endregion
 }
