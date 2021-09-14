@@ -978,8 +978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baaee180cf71e9340a41125d0cb83781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyCubes: {fileID: 1983403229297471929}
-  _gameStopped: 0
+  gameStopped: 0
 --- !u!4 &4816006418948637699
 Transform:
   m_ObjectHideFlags: 0
@@ -1021,8 +1020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93e68a701df9754db5aba0d6dd45cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _eCubesParent: {fileID: 1983403229297471929}
-  isMoving: 0
+  _enemyCubesParent: {fileID: 1983403229297471929}
 --- !u!1 &7670854181488053682
 GameObject:
   m_ObjectHideFlags: 0
