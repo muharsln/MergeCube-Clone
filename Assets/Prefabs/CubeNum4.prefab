@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 344945051065963883}
   - component: {fileID: 2109195230}
   - component: {fileID: 6449237051291300670}
-  - component: {fileID: 2109195229}
   - component: {fileID: 3250084064277944661}
+  - component: {fileID: 2109195229}
   m_Layer: 6
   m_Name: CubeNum4
   m_TagString: 4
@@ -122,19 +122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _upgradeObjectTag: 8
---- !u!65 &2109195229
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 344945051068156841}
-  m_Material: {fileID: 13400000, guid: 748fcdfb965d43c4ab5feb20d9b5c3f4, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.6, z: 0.6}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!96 &3250084064277944661
 TrailRenderer:
   serializedVersion: 2
@@ -242,6 +229,19 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 0
+--- !u!65 &2109195229
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344945051068156841}
+  m_Material: {fileID: 13400000, guid: 748fcdfb965d43c4ab5feb20d9b5c3f4, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.6, z: 0.6}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3402546168642237687
 GameObject:
   m_ObjectHideFlags: 0

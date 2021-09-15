@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,9 +11,10 @@ public class Ball : MonoBehaviour
 
     private void OnDisable()
     {
+        //OBJECT POOL DAN ALIP GERÝ GÖNDERDÝÐÝMÝZ ÝÇÝN BUNLARI SIFIRLAMAMIZ GEREKÝYOR
         _isMoved = false;
         _hasCollided = false;
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
 
 
@@ -90,11 +92,15 @@ public class Ball : MonoBehaviour
     void CreateBall(Transform target)
     {
         GameObject GO = ObjectPooler.SharedInstance.GetPooledObject(_upgradeObjectTag);
-        GO.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
-        GO.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
         GO.transform.position = target.transform.position;
         GO.transform.rotation = target.transform.rotation;
+
+        GO.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
+        GO.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
+
         GO.SetActive(true);
+
+        //GO.GetComponent<Rigidbody>().AddForce(0f, 10f, 0f * 10f);
     }
     #endregion
 }

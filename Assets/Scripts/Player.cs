@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
                     targetPos.z = 7.8f;
 
                     // Child objeyi force ile ileri taþý.
+                    playerBall.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
                     playerBall.GetComponent<Rigidbody>().AddForce(0f, 0f, 15f, ForceMode.Impulse);
 
                     playerBall.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
@@ -88,16 +89,19 @@ public class Player : MonoBehaviour
         if (this.transform.childCount < 1)
         {
             // Yeni obje oluþtur.
-            string tag = _tags[Random.Range(0, 5)];
+            string tag = _tags[Random.Range(0, 0)];
 
             GameObject newBall = ObjectPooler.SharedInstance.GetPooledObject(tag);
             newBall.transform.parent = this.transform;
-            newBall.transform.localPosition = new Vector3(0f, 0.3f, 0f);
+            newBall.transform.localPosition = new Vector3(0f, 0.6f, 0f);
             newBall.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             newBall.transform.GetChild(GameManager.Square).gameObject.SetActive(true);
             newBall.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
+            newBall.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            // newBall.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
             newBall.SetActive(true);
-            newBall.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+
+
 
             _isMoving = false;
         }
