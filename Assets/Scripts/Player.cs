@@ -13,7 +13,10 @@ public class Player : MonoBehaviour
     private float _posX;
     private float _sphereX;
 
-    // Top ileri gidiyorsa kontrolü kapatmak için.
+    // Küp ileri gitme hýzý
+    [SerializeField] private float _cubeForwardMoveSpeed;
+
+    // Küp ileri gidiyorsa kontrolü kapatmak için.
     private bool _isMoving;
 
     // Tag listesi.
@@ -24,7 +27,6 @@ public class Player : MonoBehaviour
         Instance = this;
     }
 
-    // Hareket kodlarý için Update yerine FixedUpdate kullanýlabilir.
     void Update()
     {
         CubeMovement();
@@ -33,15 +35,15 @@ public class Player : MonoBehaviour
     #region Cube Movement
     void CubeMovement()
     {
-        if (GameManager.Instance.gameStopped == false)
+        if (!GameManager.Instance.gameStopped)
         {
-            if (_isMoving == false)
+            if (!_isMoving)
             {
-                //SAÐA SOLA HAREKET
+                // Saða sola hareket kodlarý.
                 if (Input.GetMouseButtonDown(0))
                 {
                     _mousePosStart = Input.mousePosition;
-                    _posX = this.gameObject.transform.GetChild(0).transform.localPosition.x;
+                    _posX = gameObject.transform.GetChild(0).transform.localPosition.x;
                 }
 
                 if (Input.GetMouseButton(0))
@@ -53,28 +55,28 @@ public class Player : MonoBehaviour
 
                     if (_sphereX < -1.5f) _sphereX = -1.5f;
 
-                    this.gameObject.transform.GetChild(0).transform.localPosition = new Vector3(
-                        Mathf.Lerp(this.transform.GetChild(0).transform.localPosition.x, _sphereX, 0.1f),
-                        this.transform.GetChild(0).localPosition.y,
-                        this.transform.GetChild(0).transform.localPosition.z);
+                    gameObject.transform.GetChild(0).transform.localPosition = new Vector3(
+                     Mathf.Lerp(transform.GetChild(0).transform.localPosition.x, _sphereX, 0.1f),
+                     transform.GetChild(0).localPosition.y,
+                     transform.GetChild(0).transform.localPosition.z);
                 }
 
                 if (Input.GetMouseButtonUp(0))
                 {
                     // Child objeyi al.
-                    GameObject playerBall = this.transform.GetChild(0).gameObject;
-                    Vector3 targetPos = playerBall.transform.localPosition;
+                    GameObject playerCube = transform.GetChild(0).gameObject;
+                    Vector3 targetPos = playerCube.transform.localPosition;
                     targetPos.z = 7.8f;
 
                     // Child objeyi force ile ileri taþý.
-                    playerBall.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-                    playerBall.GetComponent<Rigidbody>().AddForce(0f, 0f, 15f, ForceMode.Impulse);
+                    playerCube.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+                    playerCube.GetComponent<Rigidbody>().AddForce(Vector3.forward * _cubeForwardMoveSpeed * Time.deltaTime, ForceMode.Impulse);
 
-                    playerBall.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
-                    playerBall.transform.GetChild(GameManager.Trail).gameObject.SetActive(true);
+                    playerCube.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
+                    playerCube.transform.GetChild(GameManager.Trail).gameObject.SetActive(true);
 
                     // Parentini deðiþ.
-                    playerBall.transform.parent = _enemyCubesParent;
+                    playerCube.transform.parent = _enemyCubesParent;
 
                     _isMoving = true;
                 }
@@ -83,12 +85,13 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    #region Create Player Ball
-    public void CreatePlayerBall()
+    #region Create Player Cube
+    public void CreatePlayerCube()
     {
-        if (this.transform.childCount < 1)
+        if (transform.childCount < 1)
         {
             // Yeni obje oluþtur.
+<<<<<<< HEAD
             string tag = _tags[Random.Range(0, 5)];
 
             GameObject newBall = ObjectPooler.SharedInstance.GetPooledObject(tag);
@@ -102,6 +105,19 @@ public class Player : MonoBehaviour
             newBall.SetActive(true);
 
 
+=======
+            string tag = _tags[Random.Range(0, 6)];
+
+            GameObject newCube = ObjectPooler.SharedInstance.GetPooledObject(tag);
+            newCube.transform.parent = transform;
+            newCube.transform.localPosition = new Vector3(0f, 0.6f, 0f);
+            newCube.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            newCube.transform.GetChild(GameManager.Square).gameObject.SetActive(true);
+            newCube.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
+            newCube.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            // newCube.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+            newCube.SetActive(true);
+>>>>>>> Muhammed
 
             _isMoving = false;
         }

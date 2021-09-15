@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Cube : MonoBehaviour
 {
     [SerializeField] private string _upgradeObjectTag;
 
@@ -19,20 +19,24 @@ public class Ball : MonoBehaviour
         //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
 
+<<<<<<< HEAD:Assets/Scripts/Ball.cs
     private void Start()
     {
         this._rb = this.GetComponent<Rigidbody>();
     }
 
+=======
+>>>>>>> Muhammed:Assets/Scripts/Cube.cs
     private void OnCollisionEnter(Collision other)
     {
         // Küp'ün player'den ayrýlma kýsmý bu blokta yapýlýyor.
-        if (GameManager.Instance.gameStopped == false)
+        if (!GameManager.Instance.gameStopped)
         {
-            if (this._isMoved == false)
+            if (!_isMoved)
             {
                 if (other.gameObject.layer == 6 || other.gameObject.layer == 7)
                 {
+<<<<<<< HEAD:Assets/Scripts/Ball.cs
 
                     this.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
 
@@ -40,22 +44,29 @@ public class Ball : MonoBehaviour
                     this._isMoved = true;
                     this._rb.constraints = RigidbodyConstraints.None;
                     Player.Instance.CreatePlayerBall();
+=======
+                    transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
+                    //gameObject.layer = 6;
+                    _isMoved = true;
+                    gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                    Player.Instance.CreatePlayerCube();
+>>>>>>> Muhammed:Assets/Scripts/Cube.cs
                 }
             }
         }
 
         // Küpleri birleþtirme bloðu.
-        if (other.gameObject.layer == 6 && this.transform.tag == other.transform.tag && other.transform.tag != "2048")
+        if (other.gameObject.layer == 6 && transform.tag == other.transform.tag && other.transform.tag != "2048")
         {
-            if (other.gameObject.GetComponent<Ball>()._hasCollided == true)
+            if (other.gameObject.GetComponent<Cube>()._hasCollided)
             {
                 return;
             }
 
-            other.gameObject.GetComponent<Ball>()._hasCollided = true;
-            this._hasCollided = true;
+            other.gameObject.GetComponent<Cube>()._hasCollided = true;
+            _hasCollided = true;
 
-            StartCoroutine(MoveToTarget(this.transform, other.transform, 2f, 0.1f, _upgradeObjectTag));
+            StartCoroutine(MoveToTarget(transform, other.transform, 2f, 0.1f, _upgradeObjectTag));
             return;
         }
     }
@@ -63,7 +74,7 @@ public class Ball : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         // Fail olma bölümü(Buglar düzeltilecek).
-        if (other.gameObject.CompareTag("StartPointLine") && this._isMoved == true)
+        if (other.gameObject.CompareTag("StartPointLine") && _isMoved)
         {
             other.gameObject.GetComponent<BoxCollider>().isTrigger = false;
             GameManager.Instance.GameFail();

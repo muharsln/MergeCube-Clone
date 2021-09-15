@@ -12,6 +12,11 @@ TagManager:
   - 32
   - 64
   - EnemyCubes
+  - 128
+  - 256
+  - 512
+  - 1024
+  - 2048
   layers:
   - Default
   - TransparentFX
