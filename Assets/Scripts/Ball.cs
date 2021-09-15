@@ -9,6 +9,8 @@ public class Ball : MonoBehaviour
     private bool _hasCollided;
     private bool _isMoved;
 
+    Rigidbody _rb;
+
     private void OnDisable()
     {
         //OBJECT POOL DAN ALIP GERÝ GÖNDERDÝÐÝMÝZ ÝÇÝN BUNLARI SIFIRLAMAMIZ GEREKÝYOR
@@ -17,6 +19,10 @@ public class Ball : MonoBehaviour
         //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
 
+    private void Start()
+    {
+        this._rb = this.GetComponent<Rigidbody>();
+    }
 
     private void OnCollisionEnter(Collision other)
     {
@@ -32,7 +38,7 @@ public class Ball : MonoBehaviour
 
                     //this.gameObject.layer = 6;
                     this._isMoved = true;
-                    this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                    this._rb.constraints = RigidbodyConstraints.None;
                     Player.Instance.CreatePlayerBall();
                 }
             }
@@ -100,7 +106,8 @@ public class Ball : MonoBehaviour
 
         GO.SetActive(true);
 
-        //GO.GetComponent<Rigidbody>().AddForce(0f, 10f, 0f * 10f);
+        Rigidbody rb = GO.GetComponent<Rigidbody>();
+        rb.AddForce(0f, 4f, 0f, ForceMode.Impulse);
     }
     #endregion
 }

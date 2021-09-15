@@ -89,11 +89,11 @@ public class Player : MonoBehaviour
         if (this.transform.childCount < 1)
         {
             // Yeni obje oluþtur.
-            string tag = _tags[Random.Range(0, 0)];
+            string tag = _tags[Random.Range(0, 5)];
 
             GameObject newBall = ObjectPooler.SharedInstance.GetPooledObject(tag);
             newBall.transform.parent = this.transform;
-            newBall.transform.localPosition = new Vector3(0f, 0.6f, 0f);
+            newBall.transform.localPosition = new Vector3(0f, 0.3f, 0f);
             newBall.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             newBall.transform.GetChild(GameManager.Square).gameObject.SetActive(true);
             newBall.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
