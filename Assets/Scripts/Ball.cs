@@ -9,6 +9,8 @@ public class Ball : MonoBehaviour
     private bool _hasCollided;
     private bool _isMoved;
 
+    private int _goldAmount, _diamondAmount;
+
     Rigidbody _rb;
 
     private void OnDisable()
@@ -22,6 +24,9 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         this._rb = this.GetComponent<Rigidbody>();
+
+        _goldAmount = PlayerPrefs.GetInt("Gold");
+        _diamondAmount = PlayerPrefs.GetInt("Diamond");
     }
 
     private void OnCollisionEnter(Collision other)
@@ -94,9 +99,45 @@ public class Ball : MonoBehaviour
     }
     #endregion
 
+    private void DiamondSave()
+    {
+        GameManager.Instance.diamondText.text = _diamondAmount.ToString();
+        PlayerPrefs.SetInt("Diamond", _diamondAmount);
+    }
+
     #region Create Ball
     void CreateBall(Transform target)
     {
+        _goldAmount++;
+        GameManager.Instance.goldText.text = _goldAmount.ToString();
+        PlayerPrefs.SetInt("Gold", _goldAmount);
+
+        switch (_upgradeObjectTag)
+        {
+            case "128":
+                _diamondAmount++;
+                DiamondSave();
+                break;
+            case "256":
+                _diamondAmount += 2;
+                DiamondSave();
+                break;
+            case "512":
+                _diamondAmount += 3;
+                DiamondSave();
+                break;
+            case "1024":
+                _diamondAmount += 4;
+                DiamondSave();
+                break;
+            case "2048":
+                _diamondAmount += 5;
+                DiamondSave();
+                break;
+            default:
+                break;
+        }
+
         GameObject GO = ObjectPooler.SharedInstance.GetPooledObject(_upgradeObjectTag);
         GO.transform.position = target.transform.position;
         GO.transform.rotation = target.transform.rotation;
