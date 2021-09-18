@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
 
     public static int Square = 0, Trail = 1;
 
-    [HideInInspector] public int goldAmount, diamondAmount;
-
     public Text goldText, diamondText;
 
     [HideInInspector] public bool gameStopped;
@@ -21,6 +19,12 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void Start()
+    {
+        goldText.text = PlayerPrefs.GetInt("Gold").ToString();
+        diamondText.text = PlayerPrefs.GetInt("Diamond").ToString();
     }
 
     public void GameFail()
