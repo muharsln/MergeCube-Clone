@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 0
-  m_FogColor: {r: 0.65080994, g: 0.666729, b: 0.7075472, a: 1}
+  m_FogColor: {r: 0, g: 0.1582799, b: 1, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.05
   m_LinearFogStart: 0
@@ -27,8 +27,8 @@ RenderSettings:
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.13296545, g: 0.19145328, b: 0.33962262, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 0293a4fad2dd835418fc4cef64a2ba72, type: 2}
-  m_HaloStrength: 0.5
-  m_FlareStrength: 1
+  m_HaloStrength: 0
+  m_FlareStrength: 0
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 477cc4148fad3449482a3bc3178594e2, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: b5a805a073369e342b942e79e996ec07, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: b894dcede899de44891f7d52706c05c3, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -656,7 +656,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
   m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
-  m_LocalPosition: {x: 0, y: 9.53, z: -4.13}
+  m_LocalPosition: {x: 0, y: 7.37, z: -2.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1607,8 +1607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baaee180cf71e9340a41125d0cb83781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goldAmount: 0
-  diamondAmount: 0
   goldText: {fileID: 657332796}
   diamondText: {fileID: 155613066}
   gameStopped: 0
@@ -1666,7 +1664,7 @@ GameObject:
   - component: {fileID: 7670854181488053681}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1678,6 +1676,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7670854181488053680}
     m_Modifications:
+    - target: {fileID: -1754484490806928288, guid: 0d7102b9c876c7349871ae7c28ed010d, type: 3}
+      propertyPath: _rotationAnimate
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 344945051068156841, guid: 0d7102b9c876c7349871ae7c28ed010d, type: 3}
       propertyPath: m_Name
       value: Cube
@@ -1700,7 +1702,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 344945051068389257, guid: 0d7102b9c876c7349871ae7c28ed010d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 344945051068389257, guid: 0d7102b9c876c7349871ae7c28ed010d, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1724,7 +1726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 344945051068389257, guid: 0d7102b9c876c7349871ae7c28ed010d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -360
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d7102b9c876c7349871ae7c28ed010d, type: 3}
