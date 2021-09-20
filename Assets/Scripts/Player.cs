@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
 
                     // Child objeyi force ile ileri taþý.
                     playerBall.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-                    playerBall.GetComponent<Rigidbody>().AddForce(0f, 0f, 15f, ForceMode.Impulse);
+                    playerBall.GetComponent<Rigidbody>().AddForce(0f, 0f, 480f, ForceMode.Impulse);
 
                     playerBall.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
                     playerBall.transform.GetChild(GameManager.Trail).gameObject.SetActive(true);

@@ -6,6 +6,8 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] private string _upgradeObjectTag;
 
+    private Animator _animator;
+
     private bool _hasCollided;
     private bool _isMoved;
 
@@ -13,16 +15,36 @@ public class Ball : MonoBehaviour
 
     Rigidbody _rb;
 
+    private void Awake()
+    {
+        this._animator = this.GetComponent<Animator>();
+    }
+
     private void OnDisable()
     {
         //OBJECT POOL DAN ALIP GERÝ GÖNDERDÝÐÝMÝZ ÝÇÝN BUNLARI SIFIRLAMAMIZ GEREKÝYOR
-        _isMoved = false;
-        _hasCollided = false;
-        //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        this._isMoved = false;
+        this._hasCollided = false;
+    }
+
+    private void OnEnable()
+    {
+        if (this.transform.parent != null)
+        {
+            if (this.gameObject.CompareTag("2") == false && this.transform.parent.CompareTag("Player") == true)
+            {
+                _animator.enabled = false;
+            }
+            else if (this.gameObject.CompareTag("2") == false)
+            {
+                _animator.enabled = true;
+            }
+        }
     }
 
     private void Start()
     {
+        //  this._rotationAnimate = this.GetComponent<Animation>();
         this._rb = this.GetComponent<Rigidbody>();
 
         _goldAmount = PlayerPrefs.GetInt("Gold");
@@ -60,7 +82,7 @@ public class Ball : MonoBehaviour
             other.gameObject.GetComponent<Ball>()._hasCollided = true;
             this._hasCollided = true;
 
-            StartCoroutine(MoveToTarget(this.transform, other.transform, 2f, 0.1f, _upgradeObjectTag));
+            StartCoroutine(MoveToTarget(this.transform, other.transform, 5f, 0.05f, _upgradeObjectTag));
             return;
         }
     }
@@ -84,7 +106,7 @@ public class Ball : MonoBehaviour
 
         Vector3 currentPos = follower.transform.position;
 
-        // Lerp ile objeden diðer objeye doðru ilerliyor.
+        //Lerp ile objeden diðer objeye doðru ilerliyor.
         while (elapsedTime < time)
         {
             follower.transform.position = Vector3.Lerp(currentPos, Target.position, (elapsedTime / waitTime) * speed);
@@ -96,6 +118,7 @@ public class Ball : MonoBehaviour
         Target.gameObject.SetActive(false);
 
         CreateBall(Target);
+        yield return null;
     }
     #endregion
 
@@ -139,8 +162,8 @@ public class Ball : MonoBehaviour
         }
 
         GameObject GO = ObjectPooler.SharedInstance.GetPooledObject(_upgradeObjectTag);
-        GO.transform.position = target.transform.position;
-        GO.transform.rotation = target.transform.rotation;
+        GO.transform.position = this.transform.position;
+        GO.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
         GO.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
         GO.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
@@ -148,7 +171,8 @@ public class Ball : MonoBehaviour
         GO.SetActive(true);
 
         Rigidbody rb = GO.GetComponent<Rigidbody>();
-        rb.AddForce(0f, 4f, 0f, ForceMode.Impulse);
+        rb.AddForce(0f, 100f, 0f, ForceMode.Impulse);
+
     }
     #endregion
 }
