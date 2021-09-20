@@ -17,36 +17,29 @@ public class Ball : MonoBehaviour
 
     private void Awake()
     {
-        this._animator = this.GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
 
     private void OnDisable()
     {
         //OBJECT POOL DAN ALIP GERÝ GÖNDERDÝÐÝMÝZ ÝÇÝN BUNLARI SIFIRLAMAMIZ GEREKÝYOR
-        this._isMoved = false;
-        this._hasCollided = false;
+        _isMoved = false;
+        _hasCollided = false;
     }
 
     private void OnEnable()
     {
-        if (this.transform.parent != null)
+        if (transform.parent != null)
         {
-            if (this.gameObject.CompareTag("2") == false && this.transform.parent.CompareTag("Player") == true)
-            {
-                _animator.enabled = false;
-            }
-            else if (this.gameObject.CompareTag("2") == false)
-            {
-                _animator.enabled = true;
-            }
+            if (!gameObject.CompareTag("2") && transform.parent.CompareTag("Player")) _animator.enabled = false;
+            else if (!gameObject.CompareTag("2")) _animator.enabled = true;
         }
     }
 
     private void Start()
     {
         //  this._rotationAnimate = this.GetComponent<Animation>();
-        this._rb = this.GetComponent<Rigidbody>();
-
+        _rb = GetComponent<Rigidbody>();
         _goldAmount = PlayerPrefs.GetInt("Gold");
         _diamondAmount = PlayerPrefs.GetInt("Diamond");
     }
@@ -54,35 +47,24 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         // Küp'ün player'den ayrýlma kýsmý bu blokta yapýlýyor.
-        if (GameManager.Instance.gameStopped == false)
+        if (!GameManager.Instance.gameStopped && !_isMoved && other.gameObject.layer == 6 || other.gameObject.layer == 7)
         {
-            if (this._isMoved == false)
-            {
-                if (other.gameObject.layer == 6 || other.gameObject.layer == 7)
-                {
-
-                    this.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
-
-                    //this.gameObject.layer = 6;
-                    this._isMoved = true;
-                    this._rb.constraints = RigidbodyConstraints.None;
-                    Player.Instance.CreatePlayerBall();
-                }
-            }
+            transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
+            //this.gameObject.layer = 6;
+            _isMoved = true;
+            _rb.constraints = RigidbodyConstraints.None;
+            Player.Instance.CreatePlayerBall();
         }
 
         // Küpleri birleþtirme bloðu.
-        if (other.gameObject.layer == 6 && this.transform.tag == other.transform.tag && other.transform.tag != "2048")
+        if (other.gameObject.layer == 6 && transform.CompareTag(other.transform.tag) && !other.transform.CompareTag("2048"))
         {
-            if (other.gameObject.GetComponent<Ball>()._hasCollided == true)
-            {
-                return;
-            }
+            if (other.gameObject.GetComponent<Ball>()._hasCollided) return;
 
             other.gameObject.GetComponent<Ball>()._hasCollided = true;
-            this._hasCollided = true;
+            _hasCollided = true;
 
-            StartCoroutine(MoveToTarget(this.transform, other.transform, 5f, 0.05f, _upgradeObjectTag));
+            StartCoroutine(MoveToTarget(transform, other.transform, 5f, 0.05f, _upgradeObjectTag));
             return;
         }
     }
@@ -90,11 +72,16 @@ public class Ball : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         // Fail olma bölümü(Buglar düzeltilecek).
-        if (other.gameObject.CompareTag("StartPointLine") && this._isMoved == true)
+        if (other.gameObject.CompareTag("StartPointLine") && _isMoved)
         {
             other.gameObject.GetComponent<BoxCollider>().isTrigger = false;
             GameManager.Instance.GameFail();
         }
+    }
+    private void DiamondSave()
+    {
+        GameManager.Instance.diamondText.text = _diamondAmount.ToString();
+        PlayerPrefs.SetInt("Diamond", _diamondAmount);
     }
 
     #region Move To Target
@@ -106,7 +93,7 @@ public class Ball : MonoBehaviour
 
         Vector3 currentPos = follower.transform.position;
 
-        //Lerp ile objeden diðer objeye doðru ilerliyor.
+        // Lerp ile objeden diðer objeye doðru ilerliyor.
         while (elapsedTime < time)
         {
             follower.transform.position = Vector3.Lerp(currentPos, Target.position, (elapsedTime / waitTime) * speed);
@@ -121,12 +108,6 @@ public class Ball : MonoBehaviour
         yield return null;
     }
     #endregion
-
-    private void DiamondSave()
-    {
-        GameManager.Instance.diamondText.text = _diamondAmount.ToString();
-        PlayerPrefs.SetInt("Diamond", _diamondAmount);
-    }
 
     #region Create Ball
     void CreateBall(Transform target)
@@ -162,7 +143,7 @@ public class Ball : MonoBehaviour
         }
 
         GameObject GO = ObjectPooler.SharedInstance.GetPooledObject(_upgradeObjectTag);
-        GO.transform.position = this.transform.position;
+        GO.transform.position = transform.position;
         GO.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
         GO.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
@@ -172,7 +153,6 @@ public class Ball : MonoBehaviour
 
         Rigidbody rb = GO.GetComponent<Rigidbody>();
         rb.AddForce(0f, 100f, 0f, ForceMode.Impulse);
-
     }
     #endregion
 }
