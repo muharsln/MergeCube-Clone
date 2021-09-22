@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
         if (transform.childCount < 1)
         {
             // Yeni obje oluþtur.
-            string tag = _tags[Random.Range(0, 0)];
+            string tag = _tags[Random.Range(0, 5)];
 
             GameObject newBall = ObjectPooler.SharedInstance.GetPooledObject(tag);
             newBall.transform.parent = transform;
