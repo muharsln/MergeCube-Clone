@@ -67,8 +67,8 @@ public class Player : MonoBehaviour
                 playerBall.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
                 playerBall.GetComponent<Rigidbody>().AddForce(0f, 0f, 480f, ForceMode.Impulse);
 
-                playerBall.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
-                playerBall.transform.GetChild(GameManager.Trail).gameObject.SetActive(true);
+                playerBall.transform.GetChild(GameManager.Instance.Square).gameObject.SetActive(false);
+                playerBall.transform.GetChild(GameManager.Instance.Trail).gameObject.SetActive(true);
 
                 // Parentini deðiþ.
                 playerBall.transform.parent = _enemyCubesParent;
@@ -85,14 +85,14 @@ public class Player : MonoBehaviour
         if (transform.childCount < 1)
         {
             // Yeni obje oluþtur.
-            string tag = _tags[Random.Range(0, 5)];
+            string tag = _tags[Random.Range(0, 0)];
 
             GameObject newBall = ObjectPooler.SharedInstance.GetPooledObject(tag);
             newBall.transform.parent = transform;
             newBall.transform.localPosition = new Vector3(0f, 0.3f, 0f);
             newBall.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-            newBall.transform.GetChild(GameManager.Square).gameObject.SetActive(true);
-            newBall.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
+            newBall.transform.GetChild(GameManager.Instance.Square).gameObject.SetActive(true);
+            newBall.transform.GetChild(GameManager.Instance.Trail).gameObject.SetActive(false);
             newBall.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             // newBall.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
             newBall.SetActive(true);

@@ -11,7 +11,8 @@ public class Ball : MonoBehaviour
     private bool _hasCollided;
     private bool _isMoved;
 
-    private int _goldAmount, _diamondAmount;
+    [SerializeField] private ParticleSystem _collEffect;
+
 
     Rigidbody _rb;
 
@@ -25,6 +26,7 @@ public class Ball : MonoBehaviour
         //OBJECT POOL DAN ALIP GERÝ GÖNDERDÝÐÝMÝZ ÝÇÝN BUNLARI SIFIRLAMAMIZ GEREKÝYOR
         _isMoved = false;
         _hasCollided = false;
+        transform.GetChild(2).gameObject.SetActive(false); // DÝSABLE OLURKEN PARTÝCLEYÝ KAPATIYORUZ
     }
 
     private void OnEnable()
@@ -38,10 +40,7 @@ public class Ball : MonoBehaviour
 
     private void Start()
     {
-        //  this._rotationAnimate = this.GetComponent<Animation>();
         _rb = GetComponent<Rigidbody>();
-        _goldAmount = PlayerPrefs.GetInt("Gold");
-        _diamondAmount = PlayerPrefs.GetInt("Diamond");
     }
 
     private void OnCollisionEnter(Collision other)
@@ -49,8 +48,7 @@ public class Ball : MonoBehaviour
         // Küp'ün player'den ayrýlma kýsmý bu blokta yapýlýyor.
         if (!GameManager.Instance.gameStopped && !_isMoved && other.gameObject.layer == 6 || other.gameObject.layer == 7)
         {
-            transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
-            //this.gameObject.layer = 6;
+            transform.GetChild(GameManager.Instance.Trail).gameObject.SetActive(false);
             _isMoved = true;
             _rb.constraints = RigidbodyConstraints.None;
             Player.Instance.CreatePlayerBall();
@@ -80,8 +78,8 @@ public class Ball : MonoBehaviour
     }
     private void DiamondSave()
     {
-        GameManager.Instance.diamondText.text = _diamondAmount.ToString();
-        PlayerPrefs.SetInt("Diamond", _diamondAmount);
+        GameManager.Instance.diamondText.text = GameManager.Instance._diamondAmount.ToString();
+        PlayerPrefs.SetInt("Diamond", GameManager.Instance._diamondAmount);
     }
 
     #region Move To Target
@@ -112,30 +110,30 @@ public class Ball : MonoBehaviour
     #region Create Ball
     void CreateBall(Transform target)
     {
-        _goldAmount++;
-        GameManager.Instance.goldText.text = _goldAmount.ToString();
-        PlayerPrefs.SetInt("Gold", _goldAmount);
+        GameManager.Instance._goldAmount++;
+        GameManager.Instance.goldText.text = GameManager.Instance._goldAmount.ToString();
+        PlayerPrefs.SetInt("Gold", GameManager.Instance._goldAmount);
 
         switch (_upgradeObjectTag)
         {
             case "128":
-                _diamondAmount++;
+                GameManager.Instance._diamondAmount++;
                 DiamondSave();
                 break;
             case "256":
-                _diamondAmount += 2;
+                GameManager.Instance._diamondAmount += 2;
                 DiamondSave();
                 break;
             case "512":
-                _diamondAmount += 3;
+                GameManager.Instance._diamondAmount += 3;
                 DiamondSave();
                 break;
             case "1024":
-                _diamondAmount += 4;
+                GameManager.Instance._diamondAmount += 4;
                 DiamondSave();
                 break;
             case "2048":
-                _diamondAmount += 5;
+                GameManager.Instance._diamondAmount += 5;
                 DiamondSave();
                 break;
             default:
@@ -146,8 +144,11 @@ public class Ball : MonoBehaviour
         GO.transform.position = transform.position;
         GO.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
-        GO.transform.GetChild(GameManager.Square).gameObject.SetActive(false);
-        GO.transform.GetChild(GameManager.Trail).gameObject.SetActive(false);
+        GO.transform.GetChild(GameManager.Instance.Square).gameObject.SetActive(false);
+        GO.transform.GetChild(GameManager.Instance.Trail).gameObject.SetActive(false);
+        GO.transform.GetChild(GameManager.Instance.Particle).gameObject.SetActive(true);
+
+
 
         GO.SetActive(true);
 
