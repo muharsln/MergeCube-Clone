@@ -11,7 +11,8 @@ public class Ball : MonoBehaviour
     private bool _hasCollided;
     private bool _isMoved;
 
-    private int _goldAmount, _diamondAmount;
+    private int _goldAmount;
+    private int _diamondAmount;
 
     Rigidbody _rb;
 
@@ -59,6 +60,37 @@ public class Ball : MonoBehaviour
         // Küpleri birleþtirme bloðu.
         if (other.gameObject.layer == 6 && transform.CompareTag(other.transform.tag) && !other.transform.CompareTag("2048"))
         {
+            _goldAmount++;
+            Debug.Log(_goldAmount);
+            GameManager.Instance.goldText.text = _goldAmount.ToString();
+            PlayerPrefs.SetInt("Gold", _goldAmount);
+
+            switch (_upgradeObjectTag)
+            {
+                case "128":
+                    _diamondAmount++;
+                    DiamondSave();
+                    break;
+                case "256":
+                    _diamondAmount += 2;
+                    DiamondSave();
+                    break;
+                case "512":
+                    _diamondAmount += 3;
+                    DiamondSave();
+                    break;
+                case "1024":
+                    _diamondAmount += 4;
+                    DiamondSave();
+                    break;
+                case "2048":
+                    _diamondAmount += 5;
+                    DiamondSave();
+                    break;
+                default:
+                    break;
+            }
+
             if (other.gameObject.GetComponent<Ball>()._hasCollided) return;
 
             other.gameObject.GetComponent<Ball>()._hasCollided = true;
@@ -112,36 +144,6 @@ public class Ball : MonoBehaviour
     #region Create Ball
     void CreateBall(Transform target)
     {
-        _goldAmount++;
-        GameManager.Instance.goldText.text = _goldAmount.ToString();
-        PlayerPrefs.SetInt("Gold", _goldAmount);
-
-        switch (_upgradeObjectTag)
-        {
-            case "128":
-                _diamondAmount++;
-                DiamondSave();
-                break;
-            case "256":
-                _diamondAmount += 2;
-                DiamondSave();
-                break;
-            case "512":
-                _diamondAmount += 3;
-                DiamondSave();
-                break;
-            case "1024":
-                _diamondAmount += 4;
-                DiamondSave();
-                break;
-            case "2048":
-                _diamondAmount += 5;
-                DiamondSave();
-                break;
-            default:
-                break;
-        }
-
         GameObject GO = ObjectPooler.SharedInstance.GetPooledObject(_upgradeObjectTag);
         GO.transform.position = transform.position;
         GO.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
